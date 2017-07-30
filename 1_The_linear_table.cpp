@@ -12,10 +12,11 @@
 //4.vector 和string 优于动态分配的数组,避免new delete 的不对称   使用reserve 来避免不必要的内存重新分配
 
 #include<iostream>
+#include<vector>
 using namespace std;
  
 /*
-1.删除重复的排序数组
+1.删除重复的排序数组(假设是升序)
 描述:
 给定一个数组排序,删除重复的地方,这样每个元素只出现一次
 并返回新的长度。
@@ -24,18 +25,19 @@ using namespace std;
 你的函数应该返回长度= 2,现在[1,2]。
 */
 void Print(int A[],int n)
-	     {
-			 if(A == NULL || n <=0)
-			  {
-			       return;
-			  }
+{
+    if(A == NULL || n <=0)
+    {
+        return;
+    }
 
-		    for(int i=0;i<n;++i)
-			 {
-			  cout<<A[i]<<" ";
-			 }
-			 cout<<endl;
-		 }
+    for(int i=0;i<n;++i)
+    {
+        cout<<A[i]<<" ";
+    }
+    cout<<endl;
+}
+//从当前数值开始往后便利，找到和自己不同的数值就放在自己后面,最后 返回自己的下标+1就是数组大小
 class Solution_1
 {
 	public:
@@ -49,7 +51,7 @@ class Solution_1
 			  }
 
 			  int cur=0;
-			  for(int i=0;i<n;++i)
+			  for(int i=1;i<n;++i)
 			  {
 			   if(A[cur] != A[i])
 				  {
@@ -75,7 +77,7 @@ class Solution_2
 			       return 0;
 			  }
 			  //return distance(A,unique(A,A+n));
-			  return unique(A,A+n)-A;
+			  return (unique(A,A+n)-A);
 		}
 
 };
@@ -83,7 +85,7 @@ class Solution_2
 class Solution_3
 {
 	//lower_bound(begin,end,key)函数返回第一个小于关键字的位置
-	//upper_bound(begin,end,key)
+	//upper_bound(begin,end,key)函数返回第一个大于关键字的位置
 	public:
        //Time complexity: O(n)  
 	  //Space complexity: O(1)
@@ -96,24 +98,57 @@ class Solution_3
 	  {
 		 while(first != last)
 		  {
-	      *output++ = *first;
+	       *output++ = *first;
 		    first = upper_bound(first,last,*first); //找到下一个比*first大的数字的位置返回迭代器
 		  }
 		  return output;
 	 }
 };
 
+//参数中n为数组中元素个数 count为用户需要保留的重复数组个数 count=2就表示数组中所有重复的数的个数最大就是2
+
+class Solution_4{
+
+    public:
+        int removeDuplicates(int array[],int n,int count)
+        {
+           if(array == NULL || count > n)
+           {
+             return -1;
+           }
+           vector<int> vec(10,0);
+
+           for(int i=0;i<n;++i)
+           {
+             vec[array[i]]++;          
+           }
+           int index=0;
+           for(int i=0;i<10&&index<n;++i)
+           {
+               if(vec[i] !=0)
+               {
+                  for(int j=0;j<(vec[i]>= count ? count : vec[i]);++j)
+                  {
+                      array[index++]=i;
+                  }
+               }
+           }
+           return index;
+        }
+};
 int main()
 {
 
     int array[]={1,1,1,3,3,3,4,5,6,7,8,9};
 
-       Solution_1 soulution_1; 
-	   Print(array,soulution_1.removeDuplicates(array,12));
-	      Solution_2 soulution_2; 
-	   Print(array,soulution_2.removeDuplicates(array,12));
-	      Solution_3 soulution_3; 
-	   Print(array,soulution_3.removeDuplicates(array,12));
+//       Solution_1 soulution_1; 
+//	   Print(array,soulution_1.removeDuplicates(array,12));
+//	      Solution_2 soulution_2; 
+//	   Print(array,soulution_2.removeDuplicates(array,12));
+//	      Solution_3 soulution_3; 
+//	   Print(array,soulution_3.removeDuplicates(array,12));
+	      Solution_4 soulution_4; 
+	   Print(array,soulution_4.removeDuplicates(array,12,2));
 
     return 0;
 }
