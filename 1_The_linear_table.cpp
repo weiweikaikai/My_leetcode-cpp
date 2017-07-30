@@ -136,6 +136,27 @@ class Solution_4{
            return index;
         }
 };
+class Solution_5{
+
+  public:
+      int removeDuplicates(int a[],int n,int count)
+      {
+        if(a == NULL || n<=count)
+        {
+          return -1;
+        }
+        int index=count;
+        for(int i=count;i<n;++i)
+        {
+           if(a[i] != a[index-count])
+           {
+              a[index++] = a[i];
+           }
+        }
+        return index;
+      }
+};
+
 int main()
 {
 
@@ -147,8 +168,10 @@ int main()
 //	   Print(array,soulution_2.removeDuplicates(array,12));
 //	      Solution_3 soulution_3; 
 //	   Print(array,soulution_3.removeDuplicates(array,12));
-	      Solution_4 soulution_4; 
-	   Print(array,soulution_4.removeDuplicates(array,12,2));
+//	      Solution_4 soulution_4; 
+//	   Print(array,soulution_4.removeDuplicates(array,12,2));
+	      Solution_5 soulution_5; 
+	   Print(array,soulution_5.removeDuplicates(array,12,3));
 
     return 0;
 }
